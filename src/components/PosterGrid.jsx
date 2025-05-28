@@ -18,8 +18,10 @@ const PosterGrid = ({ movies, watchedMovies, markAsWatched }) => {
                 isWatched ? "grayscale" : "group-hover:scale-105"
               }`}
             />
-            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center text-white text-sm text-center p-2">
-              {movie.title}
+            <div className="absolute inset-0 bg-black/80 opacity-0 group-hover:opacity-100 transition duration-300">
+              <div className="text-white text-sm pt-8 p-2 text-center">
+                {movie.title}
+              </div>
             </div>
           </div>
         );

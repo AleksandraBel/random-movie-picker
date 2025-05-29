@@ -1,22 +1,17 @@
-import React, { useState } from "react";
-import PosterGrid from "./components/PosterGrid";
-import movies from "./data/movies.json";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 function App() {
-  const [watchedMovies, setWatchedMovies] = useState([]);
-
-  const markAsWatched = (id) => {
-    setWatchedMovies((prev) => [...prev, id]);
-  };
-
   return (
-    <div>
-      <PosterGrid
-        movies={movies}
-        watchedMovies={watchedMovies}
-        markAsWatched={markAsWatched}
-      />
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+      </Routes>
+    </Router>
   );
 }
 

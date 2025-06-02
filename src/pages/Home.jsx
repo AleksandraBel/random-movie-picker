@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import PosterGrid from "../components/PosterGrid";
 import movies from "../data/movies.json";
 
-const Home = () => {
+const Home = ({ openAuthModal }) => {
   const [watchedMovies, setWatchedMovies] = useState([]);
 
   const markAsWatched = (id) => {
@@ -16,6 +16,12 @@ const Home = () => {
         watchedMovies={watchedMovies}
         markAsWatched={markAsWatched}
       />
+      <button
+        onClick={openAuthModal}
+        className="absolute top-4 right-4 z-10 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+      >
+        Увійти
+      </button>
     </div>
   );
 };

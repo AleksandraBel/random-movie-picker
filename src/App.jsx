@@ -3,10 +3,26 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import Home from "./pages/Home";
 import ProtectedRoute from "./components/ProtectedRoute";
-import AuthModal from "./components/AuthModal";
+import Modal from "./components/Modal";
+import LoginForm from "./components/LoginForm";
+import RegisterForm from "./components/RegisterForm";
 
 function App() {
-  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [modalContent, setModalContent] = useState(null);
+
+  const openLoginModal = () => {
+    setModalContent(
+      <LoginForm onClose={closeModal} onSwitchToRegister={openRegisterModal} />
+    );
+  };
+
+  const openRegisterModal = () => {
+    setModalContent(
+      <RegisterForm onClose={closeModal} onSwitchToLogin={openLoginModal} />
+    );
+  };
+
+  const closeModal = () => setModalContent(null);
 
   return (
     <AuthProvider>
@@ -16,16 +32,15 @@ function App() {
             path="/"
             element={
               <ProtectedRoute>
-                <Home openAuthModal={() => setShowAuthModal(true)} />
+                <Home openAuthModal={openLoginModal} />
               </ProtectedRoute>
             }
           />
         </Routes>
 
-        <AuthModal
-          isOpen={showAuthModal}
-          onClose={() => setShowAuthModal(false)}
-        />
+        <Modal isOpen={modalContent !== null} onClose={closeModal}>
+          {modalContent}
+        </Modal>
       </Router>
     </AuthProvider>
   );

@@ -1,13 +1,16 @@
-import React from "react";
-import { Navigate } from "react-router-dom";
+import React, { useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
 
-const ProtectedRoute = ({ children }) => {
-  const { currentUser } = useAuth();
+const ProtectedRoute = ({ children, openAuthModal }) => {
+  const { currentUser, loading } = useAuth();
 
-  if (!currentUser) {
-    return <Navigate to="/login" />;
-  }
+  useEffect(() => {
+    if (!loading && !currentUser && openAuthModal) {
+      openAuthModal();
+    }
+  }, [loading, currentUser, openAuthModal]);
+
+  if (loading || !currentUser) return null;
 
   return children;
 };

@@ -31,7 +31,7 @@ function App() {
           <Route
             path="/"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute openAuthModal={openLoginModal}>
                 <Home openAuthModal={openLoginModal} />
               </ProtectedRoute>
             }

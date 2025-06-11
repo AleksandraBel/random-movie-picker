@@ -3,9 +3,22 @@ import PosterGrid from "../components/PosterGrid";
 import RandomMovieModal from "../components/RandomMovieModal";
 import movies from "../data/movies.json";
 
+import { useAuth } from "../contexts/AuthContext";
+import { signOut } from "firebase/auth";
+import { auth } from "../../firebase";
+
 const Home = ({ openAuthModal }) => {
   const [watchedMovies, setWatchedMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState(null);
+  const { currentUser } = useAuth();
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.error("Помилка при виході:", error);
+    }
+  };
 
   const markAsWatched = (id) => {
     setWatchedMovies((prev) => [...prev, id]);
@@ -35,7 +48,7 @@ const Home = ({ openAuthModal }) => {
 
       <div className="absolute top-0 left-0 w-full h-1/2 bg-black/20 rounded-t-full blur-md pointer-events-none" />
 
-      {/* Кнопка */}
+      {/* Кнопка Поїхали */}
       <button
         onClick={handleRandomMovie}
         className="
@@ -77,12 +90,22 @@ const Home = ({ openAuthModal }) => {
         />
       </button>
 
-      <button
-        onClick={openAuthModal}
-        className="absolute top-4 right-4 z-10 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-      >
-        Увійти
-      </button>
+      {/* Умовна кнопка */}
+      {currentUser ? (
+        <button
+          onClick={handleLogout}
+          className="absolute top-4 right-4 z-10 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+        >
+          Вийти
+        </button>
+      ) : (
+        <button
+          onClick={openAuthModal}
+          className="absolute top-4 right-4 z-10 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+        >
+          Увійти
+        </button>
+      )}
 
       {selectedMovie && (
         <RandomMovieModal

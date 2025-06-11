@@ -1,6 +1,6 @@
 import React from "react";
 
-const PosterGrid = ({ movies, watchedMovies, markAsWatched }) => {
+const PosterGrid = ({ movies, watchedMovies }) => {
   return (
     <div className="grid grid-cols-10 grid-rows-10 w-full h-screen overflow-hidden">
       {movies.map((movie) => {
@@ -9,7 +9,6 @@ const PosterGrid = ({ movies, watchedMovies, markAsWatched }) => {
           <div
             key={movie.id}
             className="relative group w-full aspect-[2/3] overflow-hidden"
-            onClick={() => !isWatched && markAsWatched(movie.id)}
           >
             <img
               src={movie.posterUrl}

@@ -46,64 +46,49 @@ const Home = ({ openAuthModal }) => {
         markAsWatched={markAsWatched}
       />
 
-      <div className="absolute top-0 left-0 w-full h-1/2 bg-black/20 rounded-t-full blur-md pointer-events-none" />
+      {/* Розмитий оверлей, якщо не залогінений */}
+      {!currentUser && (
+        <div className="absolute inset-0 z-20 bg-black/60 backdrop-blur-sm pointer-events-none" />
+      )}
 
-      {/* Кнопка Поїхали */}
-      <button
-        onClick={handleRandomMovie}
-        className="
-    fixed bottom-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
-    w-44 h-44 rounded-full
-    bg-gradient-to-tr from-red-500 to-red-700
-    shadow-lg
-    relative
-    flex items-center justify-center
-    text-white text-3xl font-extrabold
-    cursor-pointer
-    transition-transform duration-150
-    hover:scale-110
-    active:scale-95
-    hover:shadow-[0_0_60px_rgba(0,0,0,0.8)]
+      {/* Кнопка "Поїхали" */}
+      {currentUser && (
+        <button
+          onClick={handleRandomMovie}
+          className="fixed bottom-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
+                   w-44 h-44 rounded-full bg-gradient-to-tr from-red-500 to-red-700
+                   shadow-lg relative flex items-center justify-center text-white text-3xl font-extrabold
+                   cursor-pointer transition-transform duration-150 hover:scale-110 active:scale-95
+                   hover:shadow-[0_0_60px_rgba(0,0,0,0.8)] z-30"
+        >
+          <span className="relative z-10">Поїхали</span>
+          <span className="absolute top-4 left-4 w-24 h-12 rounded-full bg-white opacity-30 blur-xl pointer-events-none transform rotate-12" />
+          <span className="absolute inset-0 rounded-full bg-gradient-to-b from-transparent via-black/20 to-black/80 pointer-events-none" />
+        </button>
+      )}
 
-  "
-      >
-        <span className="relative z-10">Поїхали</span>
-
-        {/* Глянцевий блиск */}
-        <span
-          className="
-      absolute top-4 left-4 w-24 h-12
-      rounded-full
-      bg-white opacity-30
-      blur-xl
-      pointer-events-none
-      transform rotate-12
-      "
-        />
-        {/* Тінь і глибина */}
-        <span
-          className="
-      absolute inset-0 rounded-full
-      bg-gradient-to-b from-transparent via-black/20 to-black/80
-      pointer-events-none
-      "
-        />
-      </button>
-
-      {/* Умовна кнопка */}
+      {/* Кнопки Увійти / Вийти */}
       {currentUser ? (
         <button
           onClick={handleLogout}
-          className="absolute top-4 right-4 z-10 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+          className="absolute top-4 right-4 bg-gradient-to-tr from-red-500 to-red-700
+                    text-white font-bold px-4 py-2 rounded-full transition-transform duration-150 hover:scale-110 active:scale-95
+                   hover:shadow-[0_0_60px_rgba(0,0,0,0.8)] z-30"
         >
           Вийти
         </button>
       ) : (
         <button
           onClick={openAuthModal}
-          className="absolute top-4 right-4 z-10 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+          className="fixed bottom-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
+                   w-44 h-44 rounded-full bg-gradient-to-tr from-green-500 to-green-700
+                   shadow-lg relative flex items-center justify-center text-white text-3xl font-extrabold
+                   cursor-pointer transition-transform duration-150 hover:scale-110 active:scale-95
+                   hover:shadow-[0_0_60px_rgba(0,0,0,0.8)] z-30"
         >
-          Увійти
+          <span className="relative z-10">Увійти</span>
+          <span className="absolute top-4 left-4 w-24 h-12 rounded-full bg-white opacity-30 blur-xl pointer-events-none transform rotate-12" />
+          <span className="absolute inset-0 rounded-full bg-gradient-to-b from-transparent via-black/20 to-black/80 pointer-events-none" />
         </button>
       )}
 

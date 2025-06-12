@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import Home from "./pages/Home";
-import ProtectedRoute from "./components/ProtectedRoute";
 import Modal from "./components/Modal";
 import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
@@ -28,14 +27,7 @@ function App() {
     <AuthProvider>
       <Router>
         <Routes>
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute openAuthModal={openLoginModal}>
-                <Home openAuthModal={openLoginModal} />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/" element={<Home openAuthModal={openLoginModal} />} />
         </Routes>
 
         <Modal isOpen={modalContent !== null} onClose={closeModal}>

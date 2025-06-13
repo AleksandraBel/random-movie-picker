@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PosterGrid from "../components/PosterGrid";
 import RandomMovieModal from "../components/RandomMovieModal";
 import movies from "../data/movies.json";
@@ -7,10 +7,25 @@ import { useAuth } from "../contexts/AuthContext";
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebase";
 
+import { db } from "../../firebase";
+import { doc, getDoc, setDoc, arrayUnion } from "firebase/firestore";
+
 const Home = ({ openAuthModal }) => {
   const [watchedMovies, setWatchedMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState(null);
   const { currentUser } = useAuth();
+
+  useEffect(() => {
+    const fetchWatched = async () => {
+      if (!currentUser) return;
+      const docRef = doc(db, "watchedMovies", currentUser.uid);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        setWatchedMovies(docSnap.data().movieIds || []);
+      }
+    };
+    fetchWatched();
+  }, [currentUser]);
 
   const handleLogout = async () => {
     try {
@@ -20,9 +35,14 @@ const Home = ({ openAuthModal }) => {
     }
   };
 
-  const markAsWatched = (id) => {
+  const markAsWatched = async (id) => {
     setWatchedMovies((prev) => [...prev, id]);
     setSelectedMovie(null);
+
+    if (currentUser) {
+      const docRef = doc(db, "watchedMovies", currentUser.uid);
+      await setDoc(docRef, { movieIds: arrayUnion(id) }, { merge: true });
+    }
   };
 
   const handleRandomMovie = () => {
